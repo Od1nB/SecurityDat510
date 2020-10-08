@@ -28,32 +28,56 @@ def convertDeciToTenBit(deci):
 
 #DH key exchange
 
-"STEP 1 Alice and Bob agree on some global parameters for a cyclic group"
+"STEP 1 "
+"Alice and Bob agree on some global parameters for a cyclic group"
+
 publicPrime = 953
 publicG = 2
 
+print("STEP 1")
 print("Alice and Bob agree on the cyclic group with Z="+str(publicPrime)+" with the generator g= "+str(publicG))
+
+"STEP 2"
+"Both Alice and Bob has to agree on their on private key and make a public key"
+
 
 def createPublicKey(secretInt):
     return ((publicG ** secretInt) % publicPrime)
 
-def createSecretCommonKey(publicKey, secretInt):
-    return ((publicKey ** secretInt) % publicPrime)
-
-
-
 AliceSecret = 11
-BobSecret = 3
+BobSecret = 7
 Alicepublic = createPublicKey(AliceSecret)
 Bobpublic = createPublicKey(BobSecret)
 
+print("STEP 2")
+print("Alice chooses the private key "+str(AliceSecret)+" and uses this to generate the public key: "+str(Alicepublic))
+print("Bob chooses the private key "+str(BobSecret)+" and uses this to generate the public key: "+str(Bobpublic))
+
+"STEP 3"
+"Alice and Bob share public keys"
+print("STEP 3")
+print("Alice shares her public key "+str(Alicepublic)+" with Bob, and Bob shares his public key "+str(Bobpublic)+" with Alice")
+
+"STEP 4"
+"Alice and Bob creates the shared Key Kab on their own"
+
+def createSecretCommonKey(publicKey, secretInt):
+    return ((publicKey ** secretInt) % publicPrime)
+
+print("STEP 4")
+
 commonAlice = createSecretCommonKey(Bobpublic,AliceSecret)
-print("Alices common key after sharing and then combining with Bobs public: "+str(commonAlice))
+#print("Alices common key after sharing and then combining with Bobs public: "+str(commonAlice))
+print("Alices creates their common key when combinig her secret with Bobs public key and gets: "+str(commonAlice))
 
 commonBob = createSecretCommonKey(Alicepublic,BobSecret)
-print("Bobs common key after sharing and then combining with Alices public: "+str(commonBob))
+#print("Bobs common key after sharing and then combining with Alices public: "+str(commonBob))
+print("Bob creates their common key when combinig his secret with Alices public key and gets: "+str(commonBob))
 
+"STEP 5"
+"Concered about the safety of the key they do a CSPRNG with their key as SEED, taking use of BBS"
 
+print("STEP 5")
 
 def calcNext(seed,length):
     p = 11
