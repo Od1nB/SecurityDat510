@@ -133,18 +133,6 @@ task1keys = [[0,0,0,0,0,0,0,0,0,0],[0,0,0,0,0,1,1,1,1,1],[0,0,1,0,0,1,1,1,1,1],[
 task1plain = [[0,0,0,0,0,0,0,0],[1,1,1,1,1,1,1,1],[1,1,1,1,1,1,0,0],[1,0,1,0,0,1,0,1]]
 task1cipher = [[0,0,0,0,1,1,1,1],[0,1,0,0,0,0,1,1],[0,0,0,1,1,1,0,0],[1,1,0,0,0,0,1,0]]
 
-#print(sdesEncryption(task1plain[0],task1keys[0]))
-#print(sdesEncryption(task1plain[1],task1keys[1]))
-#print(sdesEncryption(task1plain[2],task1keys[2]))
-#print(sdesEncryption(task1plain[3],task1keys[3]))
-
-#print(sdesDecryption(task1cipher[0],task1keys[4]))
-#print(sdesDecryption(task1cipher[1],task1keys[5]))
-#print(sdesDecryption(task1cipher[2],task1keys[6]))
-#print(sdesDecryption(task1cipher[3],task1keys[7]))
-
-#rawkey1 =
-#print()
 "TASK 3"
 
 def createBruteKeys():
@@ -183,7 +171,6 @@ def crackSDES(cipherbits):
             possText.append(chr(numbBit))
         if len(possText)==len(text):
             return keyx,possText 
-#print(crackSDES(ctx1))
 
 def crackTripleSDES(cipherbits):
     splitted = splitTXT(cipherbits)
@@ -203,18 +190,37 @@ def crackTripleSDES(cipherbits):
                 decryptTxt.append(chr(numbBit))
             if(boolTest):
                 return k1,k2,decryptTxt
-#print(crackTripleSDES(ctx2))
 
-#keyOne = [[1,0,0,0,1,0,1,1,1,0],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0],[1,0,0,0,1,0,1,1,1,0],[1,0,1,1,1,0,1,1,1,1],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0]]
-#keyTwo = [[0,1,1,0,1,0,1,1,1,0],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0],[0,1,1,0,1,0,1,1,1,0],[0,1,1,0,1,0,1,1,1,0],[1,1,1,1,1,1,1,1,1,1],[0,0,0,0,0,0,0,0,0,0]]
+def stringToArr(bitString):
+    outputArr = [None]*len(bitString)
+    for b in range(len(bitString)):
+        outputArr[b] = bitString[b]
+    return outputArr
 
-#plainTriple = [[1,0,1,0,1,0,1,0],[0,0,0,0,0,0,0,0],[0,1,0,1,0,0,1,0]]
-#cipherTriple = [[1,1,1,0,0,1,1,0],[0,1,0,1,0,0,0,0],[0,0,0,0,0,1,0,0],[1,1,1,1,0,0,0,0]]
+def encryptString(InpString,key):
+    byteArr = []
+    for l in InpString:
+        byteArr.append(format(ord(l),"08b"))
+    encryptedArr = []
+    for byte in byteArr:
+        encryptedArr.append(sdesEncryption(stringToArr(byte),key))
 
-#print(triplesdesEnc(plainTriple[0],keyOne[0],keyTwo[0]))
-#print(triplesdesEnc(plainTriple[1],keyOne[1],keyTwo[1]))
-#print(triplesdesEnc(plainTriple[2],keyOne[2],keyTwo[2]))
-#print(triplesdesDec(cipherTriple[0],keyOne[3],keyTwo[3]))
-#print(triplesdesDec(cipherTriple[1],keyOne[4],keyTwo[4]))
-#print(triplesdesDec(cipherTriple[2],keyOne[5],keyTwo[5]))
-#print(triplesdesDec(cipherTriple[3],keyOne[6],keyTwo[6]))
+    return encryptedArr
+
+streng = "SolveigErMinSol"
+encryptedString = encryptString(streng,[1,1,1,1,1,1,1,1,1,1])
+print("Encrypted "+streng+" to "+ str(encryptedString))
+
+decryptedString = ""
+for arr in encryptedString:
+    decryptedByte = sdesDecryption(arr,[1,1,1,1,1,1,1,1,1,1])
+    bStr = ""
+    for b in decryptedByte:
+        bStr +=str(b)
+    decryptedString += str(chr(int(bStr,2)))
+
+print("And this got decryted to "+decryptedString)
+        
+
+
+#https://www.codegrepper.com/code-examples/delphi/convert+string+to+binary+python

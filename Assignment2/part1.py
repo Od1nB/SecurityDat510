@@ -105,6 +105,10 @@ print("Alice encrypted her plaintext "+str(plainTxT)+" with SDES and her keyK to
 
 decrypted = sdes.sdesDecryption(encrypted,bobsKeyK)
 print("Bob tried to decrypt this "+str(encrypted)+" from also and got this "+str(decrypted))
+
+st = "HellLO"
+biSt = bin(st)
+print(bin(st))
 #ToDo
 
 #Import SDES from other tasks DONE

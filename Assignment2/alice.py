@@ -6,6 +6,7 @@ z = 953
 pubg = 3
 prvI = 9
 publicKey = ((pubg ** prvI) % z)
+sharedKey = None
 
 @app.route("/")
 def start():
@@ -21,6 +22,7 @@ def getpub():
 def getmsg():
     bobpublic = requests.get("http://127.0.0.1:80/getpub")
     bobInt = int(bobpublic.text)
+    sharedKey = ((bobpublic ** prvI) % z)
 
     #send encrypt msg back
     return str(bobpublic.text) + str(publicKey)

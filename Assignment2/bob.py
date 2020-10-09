@@ -22,11 +22,13 @@ def getpub():
 
 @app.route("/getmsg")
 def getmsg():
-    bobpublic = requests.get("http://127.0.0.1:5000/getpub")
-    bobInt = int(bobpublic.text)
+    alicepublic = requests.get("http://127.0.0.1:5000/getpub")
+    aliceInt = int(alicepublic.text)
+    sharedKey = ((alicepublic ** prvI) % z)
+    print("shared key of bob is "+str(sharedKey))
 
     #send encrypt msg back
-    return str(bobpublic.text) + str(publicKey)
+    return str(alicepublic.text) + str(publicKey)
 
 
 
