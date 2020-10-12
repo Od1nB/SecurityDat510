@@ -191,6 +191,19 @@ def crackTripleSDES(cipherbits):
             if(boolTest):
                 return k1,k2,decryptTxt
 
+
+"Added functionality for assignment 2"
+
+def intToTenBitArray(number):
+    binaryStr = format(number,"010b")
+    outputArr = []
+    for b in binaryStr:
+        outputArr.append(int(b))
+    return outputArr
+
+#print(intToTenBitArray(10))
+
+
 def stringToArr(bitString):
     outputArr = [None]*len(bitString)
     for b in range(len(bitString)):
@@ -211,34 +224,37 @@ def encryptString(InpString,key):
 
     return encString
 
-streng = "HeiDetERMeg"
-encryptedString = encryptString(streng,[1,1,1,1,1,1,1,1,1,1])
-print("Encrypted "+streng+" to "+ str(encryptedString))
-print(len(encryptedString))
+#streng2 = "HeiDetERMeg"
+#streng = "heyo det er meg"
+#encryptedString = encryptString(streng,[1,1,1,1,1,1,1,1,1,1])
+#print("Encrypted "+streng+" to "+ str(encryptedString))
+#print(len(encryptedString))
 
-decryptedString = ""
-tempArr = []
-i = 0
-in2 = 0
-for strBits in encryptedString:
+def decryptString(encString,key):
+    decryptedString = ""
+    tempArr = []
+    i = 0
+    in2 = 0
+    for strBits in encString:
 
-    if i==7:
-        tempArr.append(strBits)
-        in2 += 1
-        #print(in2)
-        decryptArr = sdesDecryption(tempArr,[1,1,1,1,1,1,1,1,1,1])
-        bStr = ""
-        for e in decryptArr:
-            bStr += str(e)
-        decryptedString += str(chr(int(bStr,2)))
-        tempArr=[]
-        i=0
-    else:
-        tempArr.append(strBits)
-        i+=1
+        if i==7:
+            tempArr.append(strBits)
+            in2 += 1
+            #print(in2)
+            decryptArr = sdesDecryption(tempArr,key)
+            bStr = ""
+            for e in decryptArr:
+                bStr += str(e)
+            decryptedString += str(chr(int(bStr,2)))
+            tempArr=[]
+            i=0
+        else:
+            tempArr.append(strBits)
+            i+=1
+    return decryptedString
 
 
-print("And this got decryted to "+decryptedString)
+#print("And this got decryted to "+decryptString(encryptedString,[1,1,1,1,1,1,1,1,1,1]))
         
 
 
