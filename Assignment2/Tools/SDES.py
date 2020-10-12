@@ -201,23 +201,42 @@ def encryptString(InpString,key):
     byteArr = []
     for l in InpString:
         byteArr.append(format(ord(l),"08b"))
-    encryptedArr = []
+    #encryptedArr = []
+    encString = ""
     for byte in byteArr:
-        encryptedArr.append(sdesEncryption(stringToArr(byte),key))
+        temp = sdesEncryption(stringToArr(byte),key)
+        for b in temp:
+            encString += str(b)
+        #encryptedArr.append(sdesEncryption(stringToArr(byte),key))
 
-    return encryptedArr
+    return encString
 
-streng = "SolveigErMinSol"
+streng = "HeiDetERMeg"
 encryptedString = encryptString(streng,[1,1,1,1,1,1,1,1,1,1])
 print("Encrypted "+streng+" to "+ str(encryptedString))
+print(len(encryptedString))
 
 decryptedString = ""
-for arr in encryptedString:
-    decryptedByte = sdesDecryption(arr,[1,1,1,1,1,1,1,1,1,1])
-    bStr = ""
-    for b in decryptedByte:
-        bStr +=str(b)
-    decryptedString += str(chr(int(bStr,2)))
+tempArr = []
+i = 0
+in2 = 0
+for strBits in encryptedString:
+
+    if i==7:
+        tempArr.append(strBits)
+        in2 += 1
+        #print(in2)
+        decryptArr = sdesDecryption(tempArr,[1,1,1,1,1,1,1,1,1,1])
+        bStr = ""
+        for e in decryptArr:
+            bStr += str(e)
+        decryptedString += str(chr(int(bStr,2)))
+        tempArr=[]
+        i=0
+    else:
+        tempArr.append(strBits)
+        i+=1
+
 
 print("And this got decryted to "+decryptedString)
         
