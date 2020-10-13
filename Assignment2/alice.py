@@ -9,7 +9,7 @@ pubg = 3
 prvI = 9
 publicKey = ((pubg ** prvI) % z)
 sharedKey = None
-msg = "This is alice saying hello"
+msg = "This is alice saying heyo"
 
 @app.route("/")
 def start():
@@ -26,14 +26,14 @@ def getmsg():
     bobpublic = requests.get("http://127.0.0.1:80/getpub")
     bobInt = int(bobpublic.text)
     sharedKey = ((bobInt ** prvI) % z)
-    print("shared key of alice is "+str(sharedKey))
+    sharedK = sdes.BBSrand(sharedKey,10)
+    print("shared k of alice after BBS is "+str(sharedK))
 
     encryptedGet = requests.get("http://127.0.0.1:80/sendmsg")
     encryptedMsg = str(encryptedGet.text)
-    print(encryptedMsg)
-    #print(sdes.intToTenBitArray(sharedKey))
+   
 
-    decryptedMsg = sdes.decryptString(encryptedMsg,sdes.intToTenBitArray(sharedKey))
+    decryptedMsg = sdes.decryptString(encryptedMsg,sdes.stringToArr(sharedK))
 
     #send encrypt msg back
     return decryptedMsg
@@ -45,7 +45,8 @@ def sendmsg():
     print(bobInt)
     print(type(bobInt))
     sharedKey = ((bobInt ** prvI) % z)
-    encryptedMsg = sdes.encryptString(msg,sdes.intToTenBitArray(sharedKey))
+    sharedK = sdes.BBSrand(sharedKey,10)
+    encryptedMsg = sdes.encryptString(msg,sdes.stringToArr(sharedK))
     return encryptedMsg
 
 

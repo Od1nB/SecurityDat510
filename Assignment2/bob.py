@@ -5,11 +5,11 @@ from Tools import SDES as sdes
 
 app = Flask(__name__)
 z = 953
-pubg = 4
+pubg = 3
 prvI = 6
 publicKey = ((pubg ** prvI) % z)
 sharedKey = None
-msg = "eyo this is me"
+msg = "eyo this is bobmester"
 
 @app.route("/")
 def start():
@@ -28,21 +28,23 @@ def getmsg():
     alicepublic = requests.get("http://127.0.0.1:5000/getpub")
     aliceInt = int(alicepublic.text)
     sharedKey = ((aliceInt ** prvI) % z)
-    print("shared key of bob is "+str(sharedKey))
+    sharedK = sdes.BBSrand(sharedKey,10)
+    print("shared key of bob after BBS is "+str(sharedK))
 
     encryptedGet = requests.get("http://127.0.0.1:5000/sendmsg")
     encryptedMsg = str(encryptedGet.text)
 
-    decryptedMsg = sdes.decryptString(encryptedMsg,sdes.intToTenBitArray(sharedKey))
+    decryptedMsg = sdes.decryptString(encryptedMsg,sdes.stringToArr(sharedK))
     #send encrypt msg back
-    return str(alicepublic.text) + str(publicKey)
+    return decryptedMsg
 
 @app.route("/sendmsg")
 def sendmsg():
     alicepublic = requests.get("http://127.0.0.1:5000/getpub")
     aliceInt = int(alicepublic.text)
     sharedKey = ((aliceInt ** prvI) % z)
-    encryptedMsg = sdes.encryptString(msg,sdes.intToTenBitArray(sharedKey))
+    sharedK = sdes.BBSrand(sharedKey,10)
+    encryptedMsg = sdes.encryptString(msg,sdes.stringToArr(sharedK))
     return encryptedMsg
 
 

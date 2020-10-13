@@ -1,16 +1,6 @@
 from Tools import SDES as sdes
-#from Tools import SDES as sdes
 
-plainTxT = [1,1,1,1,1,1,1,1]
-
-
-# Cyclic group G with generator g:G = <g> (public parameters)
-# used for making a private and public key for both alice and bob
-#Exchange public keys and make a key with this one
-# Kab is seed for any CSPRNG to generate a key used in a symmetric algorithm
-#Use the key to encrypt, send, decrypt and then decrypt
-
-#g = 2 z = p = 2q + 1 
+plainTxT = "3ncryPt10n 1s fuN"
 
 def convertDeciToTenBit(deci):
     bits = "{0:b}".format(deci)
@@ -26,7 +16,7 @@ def convertDeciToTenBit(deci):
 
     return bitsArray
 
-#DH key exchange
+#DH key exchange simulation
 
 "STEP 1 "
 "Alice and Bob agree on some global parameters for a cyclic group"
@@ -35,7 +25,7 @@ publicPrime = 953
 publicG = 2
 
 print("STEP 1")
-print("Alice and Bob agree on the cyclic group with Z="+str(publicPrime)+" with the generator g= "+str(publicG))
+print("Alice and Bob agree on the cyclic group with Z="+str(publicPrime)+" with the generator g="+str(publicG))
 
 "STEP 2"
 "Both Alice and Bob has to agree on their on private key and make a public key"
@@ -78,40 +68,25 @@ print("Bob creates their common key when combinig his secret with Alices public 
 "Concered about the safety of the key they do a CSPRNG with their key as SEED, taking use of BBS"
 
 print("STEP 5")
+print("Alice and Bob uses the Blum Blum Shub method to generate a strong pseudo-random number for key use")
+alicesKeyK = sdes.BBSrand(commonAlice,10)
+bobsKeyK = sdes.BBSrand(commonBob,10)
+print("Alices secret key after BBS with her shared k:"+alicesKeyK+" and Bobs equivalent:"+bobsKeyK)
 
-def calcNext(seed,length):
-    p = 11
-    q = 23
-    M = p*q
-    if length ==1:
-        return ((seed ** 2) % M)
-    else:
-        tempSeed = seed
-        output = []
-        for i in range(length):
-            tempNumb = ((tempSeed ** 2) % M)
-            output.append(tempNumb)
-            tempSeed = tempNumb
-        return output
-alicesKeyK = calcNext(commonAlice,1)
-bobsKeyK = calcNext(commonBob,1)
+print("STEP 6")
+print("Alices uses SDES as an encryption method and encrypts her plaintext ")
+alicesKeyK = sdes.stringToArr(alicesKeyK)
+encrypted = sdes.encryptString(plainTxT,alicesKeyK)
 
-alicesKeyK = convertDeciToTenBit(alicesKeyK)
-bobsKeyK = convertDeciToTenBit(bobsKeyK)
+print("Alice encrypted her plaintext: "+plainTxT+" with SDES and her secret key to this: ")
+print(encrypted)
+print("Then she sent the encrypted text over the internet to Bob")
 
+print("STEP 7")
+print("Bob recieves the encrypted text and tries to decrypt it with their secret key")
 
-encrypted = sdes.sdesEncryption(plainTxT,alicesKeyK)
-print("Alice encrypted her plaintext "+str(plainTxT)+" with SDES and her keyK to this "+str(encrypted))
+bobsKeyK = sdes.stringToArr(bobsKeyK)
+decrypted = sdes.decryptString(encrypted,bobsKeyK)
+print("The results from Bobs decryption looks like this: "+decrypted)
 
-decrypted = sdes.sdesDecryption(encrypted,bobsKeyK)
-print("Bob tried to decrypt this "+str(encrypted)+" from also and got this "+str(decrypted))
-
-st = "HellLO"
-biSt = bin(st)
-print(bin(st))
-#ToDo
-
-#Import SDES from other tasks DONE
-#Make DH key exchange to make new shared Kab DONE
-#Use BlumBlumShub for psuedorand numb
 

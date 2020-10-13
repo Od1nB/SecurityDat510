@@ -210,6 +210,20 @@ def stringToArr(bitString):
         outputArr[b] = bitString[b]
     return outputArr
 
+def BBSrand(seed,length):
+    p = 11
+    q = 23
+    M = p*q
+    outputNumb = ""
+    x = seed
+    for i in range(length):
+        x = ((x ** 2) % M)
+        if (x % 2) == 0:
+            outputNumb += "0"
+        else:
+            outputNumb += "1"
+    return outputNumb
+
 def encryptString(InpString,key):
     byteArr = []
     for l in InpString:
