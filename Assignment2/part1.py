@@ -57,11 +57,9 @@ def createSecretCommonKey(publicKey, secretInt):
 print("STEP 4")
 
 commonAlice = createSecretCommonKey(Bobpublic,AliceSecret)
-#print("Alices common key after sharing and then combining with Bobs public: "+str(commonAlice))
 print("Alices creates their common key when combinig her secret with Bobs public key and gets: "+str(commonAlice))
 
 commonBob = createSecretCommonKey(Alicepublic,BobSecret)
-#print("Bobs common key after sharing and then combining with Alices public: "+str(commonBob))
 print("Bob creates their common key when combinig his secret with Alices public key and gets: "+str(commonBob))
 
 "STEP 5"
@@ -69,7 +67,7 @@ print("Bob creates their common key when combinig his secret with Alices public 
 
 print("STEP 5")
 print("Alice and Bob uses the Blum Blum Shub method to generate a strong pseudo-random number for key use")
-alicesKeyK = sdes.BBSrand(commonAlice,10)
+alicesKeyK = sdes.BBSrand(commonAlice,10) #Function present in the Tools/SDES.py file as additional functionality for this assignment
 bobsKeyK = sdes.BBSrand(commonBob,10)
 print("Alices secret key after BBS with her shared k:"+alicesKeyK+" and Bobs equivalent:"+bobsKeyK)
 

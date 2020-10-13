@@ -201,8 +201,6 @@ def intToTenBitArray(number):
         outputArr.append(int(b))
     return outputArr
 
-#print(intToTenBitArray(10))
-
 
 def stringToArr(bitString):
     outputArr = [None]*len(bitString)
@@ -227,22 +225,16 @@ def BBSrand(seed,length):
 def encryptString(InpString,key):
     byteArr = []
     for l in InpString:
-        byteArr.append(format(ord(l),"08b"))
-    #encryptedArr = []
+        byteArr.append(format(ord(l),"08b")) #creates 8 bit value for each letter in inputstring with method ord() and format() in tandem
+
     encString = ""
     for byte in byteArr:
         temp = sdesEncryption(stringToArr(byte),key)
         for b in temp:
             encString += str(b)
-        #encryptedArr.append(sdesEncryption(stringToArr(byte),key))
 
     return encString
 
-#streng2 = "HeiDetERMeg"
-#streng = "heyo det er meg"
-#encryptedString = encryptString(streng,[1,1,1,1,1,1,1,1,1,1])
-#print("Encrypted "+streng+" to "+ str(encryptedString))
-#print(len(encryptedString))
 
 def decryptString(encString,key):
     decryptedString = ""
@@ -266,10 +258,6 @@ def decryptString(encString,key):
             tempArr.append(strBits)
             i+=1
     return decryptedString
-
-
-#print("And this got decryted to "+decryptString(encryptedString,[1,1,1,1,1,1,1,1,1,1]))
-        
 
 
 #https://www.codegrepper.com/code-examples/delphi/convert+string+to+binary+python

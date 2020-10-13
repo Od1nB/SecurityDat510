@@ -1,11 +1,10 @@
 from flask import Flask
-import requests
 from Tools import SDES as sdes
-#import SecurityDat510.Assignment2.Tools.SDES as sdes
+import requests
 
 app = Flask(__name__)
-z = 953
-pubg = 3
+z = 953 #Sophie Germain prime: 2p +1
+pubg = 3 #Generator
 prvI = 9
 publicKey = ((pubg ** prvI) % z)
 sharedKey = None
@@ -17,8 +16,7 @@ def start():
 
 @app.route("/getpub")
 def getpub():
-    #make the public key and send it
-    #print(publicKey)
+    #a route so that the public key is easily accessed 
     return str(publicKey)
 
 @app.route("/getmsg")

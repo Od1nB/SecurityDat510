@@ -4,8 +4,8 @@ from Tools import SDES as sdes
 #import SecurityDat510.Assignment2.Tools.SDES as sdes
 
 app = Flask(__name__)
-z = 953
-pubg = 3
+z = 953 #Sophie Germain prime: 2p +1
+pubg = 3 #Generator
 prvI = 6
 publicKey = ((pubg ** prvI) % z)
 sharedKey = None
@@ -17,10 +17,7 @@ def start():
 
 @app.route("/getpub")
 def getpub():
-    #make the public key and send it
-    #print(publicKey)
-    #sharedKey = publicKey ** secretInt) % publicPrime)
-
+    #a route so that the public key is easily accessed
     return str(publicKey)
 
 @app.route("/getmsg")
