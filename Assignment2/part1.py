@@ -71,6 +71,8 @@ alicesKeyK = sdes.BBSrand(commonAlice,10) #Function present in the Tools/SDES.py
 bobsKeyK = sdes.BBSrand(commonBob,10)
 print("Alices secret key after BBS with her shared k:"+alicesKeyK+" and Bobs equivalent:"+bobsKeyK)
 
+"STEP 6"
+
 print("STEP 6")
 print("Alices uses SDES as an encryption method and encrypts her plaintext ")
 alicesKeyK = sdes.stringToArr(alicesKeyK)
@@ -79,6 +81,8 @@ encrypted = sdes.encryptString(plainTxT,alicesKeyK)
 print("Alice encrypted her plaintext: "+plainTxT+" with SDES and her secret key to this: ")
 print(encrypted)
 print("Then she sent the encrypted text over the internet to Bob")
+
+"STEP 7"
 
 print("STEP 7")
 print("Bob recieves the encrypted text and tries to decrypt it with their secret key")

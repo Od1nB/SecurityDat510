@@ -1,7 +1,6 @@
 from flask import Flask
 import requests
 from Tools import SDES as sdes
-#import SecurityDat510.Assignment2.Tools.SDES as sdes
 
 app = Flask(__name__)
 z = 953 #Sophie Germain prime: 2p +1
@@ -9,7 +8,7 @@ pubg = 3 #Generator
 prvI = 6
 publicKey = ((pubg ** prvI) % z)
 sharedKey = None
-msg = "eyo this is bobmester"
+msg = "eyo this is bob"
 
 @app.route("/")
 def start():

@@ -258,6 +258,3 @@ def decryptString(encString,key):
             tempArr.append(strBits)
             i+=1
     return decryptedString
-
-
-#https://www.codegrepper.com/code-examples/delphi/convert+string+to+binary+python
