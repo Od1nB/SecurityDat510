@@ -1,6 +1,7 @@
 from flask import Flask
 import requests
 import hashlib
+import random
 
 app = Flask(__name__)
 q = 10009 #shared prime q
@@ -8,7 +9,23 @@ a = 337 #shared a generator
 
 privKey = 27
 publicKey = pow(a,privKey,q)
-K = 929
+
+
+def gcd(a,b):
+    if a > b: 
+        small = b 
+    else: 
+        small = a 
+    for i in range(1, small+1): 
+        if((a % i == 0) and (b % i == 0)): 
+            gcd = i     
+    return gcd
+
+def generateK(qprime):
+    number = random.randint(2,(q-1))
+    while(gcd(qprime-1,number)!= 1):
+        number = random.randint(2,(q-1))
+    return number
 
 
 @app.route("/")
@@ -21,17 +38,20 @@ def getpub():
     return str(publicKey)
 
 
-@app.route("/getInp")
+@app.route("/getinp")
 def getInp():
-    f = open("data.txt","r")
-    data = f.read()
-    hasher = hashlib.md5(data.encode()) #Hashing with the seed as the data from the document
+    #f = open("data.txt","r")
+    data = input("Enter a message to send to Bob: ")
+    #data = f.read()
+    hasher = hashlib.sha256(data.encode()) #Hashing with the seed as the data from the document
     hashData = hasher.hexdigest()
     liste = []
     while len(hashData)>0:
         liste.append(int(hashData[:3],16))
         hashData = hashData[3:]
+    K = generateK(q)
    
+
     print(hashData)
     S1 = pow(a,K,q)
     Kinv = pow(K,-1,(q-1))
@@ -51,11 +71,12 @@ def getDoc():
         #hasher = hashlib.md5()
         #V1 = a ** m % q
         #V2 = (publickey ** S1) * (S1 **(all S2[i] % q))
-        bobSend = requests.get("http://127.0.0.1:80/getInp")
+        bobSend = requests.get("http://127.0.0.1:80/getinp")
         S1, S2str, message = str(bobSend.text).split("//")
         S1 = int(S1)
         S2 = S2str.split("-")
-        dataHashed = hashlib.md5(message.encode())
+
+        dataHashed = hashlib.sha256(message.encode())
         hashNumbers = dataHashed.hexdigest()
         splittedHash = []
         while len(hashNumbers)>0:

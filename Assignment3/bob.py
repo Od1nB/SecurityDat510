@@ -10,7 +10,7 @@ a = 337 #shared a generator
 
 privKey = 41
 publicKey = pow(a,privKey,q)
-K = 929
+
 def gcd(a,b):
     if a > b: 
         small = b 
@@ -22,9 +22,9 @@ def gcd(a,b):
     return gcd
 
 def generateK(qprime):
-    number = random.randint(range(q-2))
+    number = random.randint(2,(q-1))
     while(gcd(qprime-1,number)!= 1):
-        number = random.randint(range(q-2))
+        number = random.randint(2,(q-1))
     return number
 
 @app.route("/")
@@ -36,11 +36,12 @@ def getpub():
     #a route so that the public key is easily accessed
     return str(publicKey)
 
-@app.route("/getInp")
+@app.route("/getinp")
 def getInp():
-    f = open("data.txt","r")
-    data = f.read()
-    hasher = hashlib.md5(data.encode()) #Hashing with the seed as the data from the document
+    #f = open("data.txt","r")
+    data = input("Enter a message to send to Alice: ")
+    #data = f.read()
+    hasher = hashlib.sha256(data.encode()) #Hashing with the seed as the data from the document
     hashData = hasher.hexdigest()
     liste = []
     while len(hashData)>0:
@@ -63,13 +64,13 @@ def getInp():
 
 @app.route("/getdoc")
 def getdoc():
-    alice_sent = requests.get("http://127.0.0.1:5000/getInp")
+    alice_sent = requests.get("http://127.0.0.1:5000/getinp")
     S1, S2str, message = str(alice_sent.text).split("//")
     S1 = int(S1)
     S2 = S2str.split("-")
     
 
-    dataHashed = hashlib.md5(message.encode())
+    dataHashed = hashlib.sha256(message.encode())
     hashNumbers = dataHashed.hexdigest()
     splittedHash = []
     while len(hashNumbers)>0:

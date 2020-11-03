@@ -1,17 +1,6 @@
 import hashlib
 import random
 
-
-
-
-#To do
-
-
-#Building blocks of Digital Signature Scheme
-#Key exchange protocol for public and private keys
-#A hash function
-#A per user public key
-#A per user private key 
 message = "Do you want to 3ncrypt some strings? Alice"
 
 "Both agree on public generator and a prime"
@@ -56,6 +45,7 @@ def gcd(a,b):
         if((a % i == 0) and (b % i == 0)): 
             gcd = i     
     return gcd
+#https://www.edureka.co/blog/gcd-in-python/
 
 "Make function for generate a K"
 def genereteK(qprime):
@@ -88,7 +78,8 @@ S1,S2str, aliceMessage = sentString.split("//")
 S1 = int(S1)
 S2 = S2str.split("-")
 print(f"Bob recieves the string and splits it on the operator #//# to receive S1, S2 and the message")
-print(f"S1: {S1}, S2: {S2} and the message: {aliceMessage}")
+print(f"S1: {S1}, S2: {S2}") 
+print(f"and the message: {aliceMessage}")
 
 "Bob hashes the message he recived from Alice and creates V1"
 bobHashed = hashlib.sha256(aliceMessage.encode())
