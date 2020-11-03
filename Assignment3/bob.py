@@ -47,7 +47,6 @@ def getInp():
     K = generateK(q)
     
     S1 = pow(a,K,q)
-    print(K)
     Kinv = pow(K,-1,(q-1))
 
     S2 = ""
