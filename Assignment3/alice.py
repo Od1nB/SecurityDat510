@@ -10,7 +10,6 @@ a = 337 #shared a generator
 privKey = 27
 publicKey = pow(a,privKey,q)
 
-
 def gcd(a,b):
     if a > b: 
         small = b 
@@ -27,7 +26,6 @@ def generateK(qprime):
         number = random.randint(2,(q-1))
     return number
 
-
 @app.route("/")
 def start():
     return "This is alice"
@@ -40,9 +38,7 @@ def getpub():
 
 @app.route("/getinp")
 def getInp():
-    #f = open("data.txt","r")
     data = input("Enter a message to send to Bob: ")
-    #data = f.read()
     hasher = hashlib.sha256(data.encode()) #Hashing with the seed as the data from the document
     hashData = hasher.hexdigest()
     liste = []
@@ -51,8 +47,6 @@ def getInp():
         hashData = hashData[3:]
     K = generateK(q)
    
-
-    print(hashData)
     S1 = pow(a,K,q)
     Kinv = pow(K,-1,(q-1))
 
@@ -67,10 +61,6 @@ def getInp():
 
 @app.route("/getDoc")
 def getDoc():
-
-        #hasher = hashlib.md5()
-        #V1 = a ** m % q
-        #V2 = (publickey ** S1) * (S1 **(all S2[i] % q))
         bobSend = requests.get("http://127.0.0.1:80/getinp")
         S1, S2str, message = str(bobSend.text).split("//")
         S1 = int(S1)
@@ -82,18 +72,17 @@ def getDoc():
         while len(hashNumbers)>0:
             splittedHash.append(int(hashNumbers[:3],16))
             hashNumbers = hashNumbers[3:]
-        print(splittedHash)
 
         V1 = ""
         for x in splittedHash:
             V1 += str(pow(a,x,q))
-        print(V1)
+        print(f"This is V1: {V1}")
 
         publicBob = int(requests.get("http://127.0.0.1:80/getpub").text)
         V2 = ""
         for s in S2:
             V2 += str((pow(publicBob,S1))*(pow(S1,int(s))) % q)
-        print(V2)
+        print(f"This is V2: {V2}")
         check = False
         if V1 == V2:
             check = True

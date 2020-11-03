@@ -2,7 +2,6 @@ from flask import Flask
 import requests
 import hashlib
 import random
-#from Tools import SDES as sdes
 
 app = Flask(__name__)
 q = 10009 #shared prime q
@@ -38,9 +37,7 @@ def getpub():
 
 @app.route("/getinp")
 def getInp():
-    #f = open("data.txt","r")
     data = input("Enter a message to send to Alice: ")
-    #data = f.read()
     hasher = hashlib.sha256(data.encode()) #Hashing with the seed as the data from the document
     hashData = hasher.hexdigest()
     liste = []
@@ -76,11 +73,11 @@ def getdoc():
     while len(hashNumbers)>0:
         splittedHash.append(int(hashNumbers[:3],16))
         hashNumbers = hashNumbers[3:]
-    #print("Splittedhash has a length of: "+str(len(splittedHash))+" and this is the hash"+ str(splittedHash))
+   
     V1 = ""
     for x in splittedHash:
         V1 += str(pow(a,x,q))
-    print("This is V1: "+ V1)
+    print(f"This is V1: {V1}")
 
 
     publicAlice = int(requests.get("http://127.0.0.1:5000/getpub").text)
@@ -88,7 +85,7 @@ def getdoc():
     for s in S2:
         #print(s)
         V2 += str((pow(publicAlice,S1))*(pow(S1,int(s)))% q)
-    print("This is V2: "+ V2)
+    print(f"This is V2: {V2}")
     
     check = False
     if V1 == V2:
